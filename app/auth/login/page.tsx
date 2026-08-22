@@ -11,10 +11,10 @@ import SignUpTab from "./_components/sign-up-tab";
 
 export default function LoginPage() {
   return (
-    <Tabs defaultValue="signin" className="mx-auto w-full max-w-md my-6 px-4">
+    <Tabs defaultValue="signin" className="mx-auto w-full max-w-md my-10 px-4">
       <TabsList>
-        <TabsTrigger value="signin">Login</TabsTrigger>
-        <TabsTrigger value="signup">Signup</TabsTrigger>
+        <TabsTrigger value="signin">Log in</TabsTrigger>
+        <TabsTrigger value="signup">Sign up</TabsTrigger>
       </TabsList>
       <TabsContent value="signin">
         <Card>

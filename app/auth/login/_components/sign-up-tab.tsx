@@ -122,7 +122,7 @@ export default function SignUpTab() {
               <span>Loading...</span>
             </>
           ) : (
-            "Signup"
+            "Sign up"
           )}
         </Button>
       </FieldGroup>
