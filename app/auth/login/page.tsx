@@ -2,12 +2,14 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SignInTab from "./_components/sign-in-tab";
 import SignUpTab from "./_components/sign-up-tab";
+import SocialAuthButtons from "./_components/social-auth-buttons";
 
 export default function LoginPage() {
   return (
@@ -27,6 +29,9 @@ export default function LoginPage() {
           <CardContent>
             <SignInTab />
           </CardContent>
+          <CardFooter className="grid grid-cols-2 gap-3">
+            <SocialAuthButtons />
+          </CardFooter>
         </Card>
       </TabsContent>
 
@@ -41,6 +46,9 @@ export default function LoginPage() {
           <CardContent>
             <SignUpTab />
           </CardContent>
+          <CardFooter className="grid grid-cols-2 gap-3">
+            <SocialAuthButtons />
+          </CardFooter>
         </Card>
       </TabsContent>
     </Tabs>
