@@ -13,13 +13,16 @@ export default function LoginPage() {
   return (
     <Tabs defaultValue="signin" className="mx-auto w-full max-w-md my-6 px-4">
       <TabsList>
-        <TabsTrigger value="signin">Sign In</TabsTrigger>
-        <TabsTrigger value="signup">Sign Up</TabsTrigger>
+        <TabsTrigger value="signin">Login</TabsTrigger>
+        <TabsTrigger value="signup">Signup</TabsTrigger>
       </TabsList>
       <TabsContent value="signin">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+            <CardTitle>Login to your account</CardTitle>
+            <CardDescription>
+              Enter your email below to Login to your account
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <SignInTab />
