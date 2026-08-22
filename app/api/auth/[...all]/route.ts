@@ -1,4 +1,3 @@
-import { session } from "./../../../../auth-schema";
 import { auth } from "@/lib/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 import arcjet, {
