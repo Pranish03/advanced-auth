@@ -14,6 +14,9 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 
 const signUpSchema = z.object({
   name: z.string().min(3, "Name must be of atleast 3 characters"),
@@ -26,6 +29,8 @@ type SignUpForm = z.infer<typeof signUpSchema>;
 export default function SignUpTab() {
   const [isPending, startTransition] = useTransition();
 
+  const router = useRouter();
+
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -37,8 +42,20 @@ export default function SignUpTab() {
 
   function handleSignUp(data: SignUpForm) {
     startTransition(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log(data);
+      await authClient.signUp.email(
+        { ...data, callbackURL: "/" },
+        {
+          onError: (error) => {
+            toast.add({
+              type: "error",
+              description: error.error.message || "Failed to signup",
+            });
+          },
+          onSuccess: () => {
+            router.push("/");
+          },
+        },
+      );
     });
   }
 
