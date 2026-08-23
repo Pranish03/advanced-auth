@@ -2,10 +2,19 @@
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useTransition } from "react";
 
 export default function Home() {
+  const [isPending, startTransition] = useTransition();
   const { data: session, isPending: loading } = authClient.useSession();
+
+  function handleSignOut() {
+    startTransition(async () => {
+      await authClient.signOut();
+    });
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -26,8 +35,19 @@ export default function Home() {
             <h1 className="text-3xl font-bold">
               Welcome, {session.user.name}!
             </h1>
-            <Button variant="destructive" onClick={() => authClient.signOut()}>
-              Sign out
+            <Button
+              disabled={isPending}
+              variant="destructive"
+              onClick={() => handleSignOut()}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />{" "}
+                  <span>Loading...</span>
+                </>
+              ) : (
+                "Sign out"
+              )}
             </Button>
           </>
         )}
