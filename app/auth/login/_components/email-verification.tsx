@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { authClient } from "@/lib/auth-client";
 import { Loader2 } from "lucide-react";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 export default function EmailVerification({ email }: { email: string }) {
   const [timeToNextResend, setTimeToNextResend] = useState(30);
   const interval = useRef<NodeJS.Timeout>(undefined);
   const [isPending, startTransition] = useTransition();
 
-  function startEmailVerificationCountDown(time = 30) {
-    setTimeToNextResend(time);
+  const runCountdown = useCallback(() => {
+    if (interval.current) clearInterval(interval.current);
 
     interval.current = setInterval(() => {
       setTimeToNextResend((t) => {
@@ -26,11 +26,15 @@ export default function EmailVerification({ email }: { email: string }) {
         return newT;
       });
     }, 1000);
-  }
+  }, []);
 
   useEffect(() => {
-    startEmailVerificationCountDown();
-  }, []);
+    runCountdown();
+
+    return () => {
+      if (interval.current) clearInterval(interval.current);
+    };
+  }, [runCountdown]);
 
   function resendHandler() {
     startTransition(async () => {
@@ -49,10 +53,10 @@ export default function EmailVerification({ email }: { email: string }) {
           type: "success",
           description: "Verification email sent!",
         });
+        setTimeToNextResend(30);
+        runCountdown();
       }
     });
-
-    startEmailVerificationCountDown();
   }
 
   return (
