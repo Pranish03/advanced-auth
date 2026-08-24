@@ -22,14 +22,19 @@ type Tab = "signin" | "signup" | "email-verification";
 export default function LoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState<string>("test@email.com");
-  const [selectedTab, setSelectedTab] = useState<Tab>("email-verification");
+  const [email, setEmail] = useState<string>("");
+  const [selectedTab, setSelectedTab] = useState<Tab>("signin");
 
   useEffect(() => {
     authClient.getSession().then((session) => {
       if (session.data != null) router.push("/");
     });
   }, [router]);
+
+  function openEmailVerificationTab(email: string) {
+    setEmail(email);
+    setSelectedTab("email-verification");
+  }
 
   return (
     <Tabs
@@ -70,7 +75,7 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <SignUpTab />
+            <SignUpTab openEmailVerificationTab={openEmailVerificationTab} />
           </CardContent>
           <CardFooter className="grid grid-cols-2 gap-3">
             <SocialAuthButtons />

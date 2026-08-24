@@ -16,7 +16,6 @@ import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
-import { useRouter } from "next/navigation";
 
 const signUpSchema = z.object({
   name: z.string().min(3, "Name must be of atleast 3 characters"),
@@ -26,10 +25,12 @@ const signUpSchema = z.object({
 
 type SignUpForm = z.infer<typeof signUpSchema>;
 
-export default function SignUpTab() {
+export default function SignUpTab({
+  openEmailVerificationTab,
+}: {
+  openEmailVerificationTab: (email: string) => void;
+}) {
   const [isPending, startTransition] = useTransition();
-
-  const router = useRouter();
 
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -42,7 +43,7 @@ export default function SignUpTab() {
 
   function handleSignUp(data: SignUpForm) {
     startTransition(async () => {
-      await authClient.signUp.email(
+      const res = await authClient.signUp.email(
         { ...data, callbackURL: "/" },
         {
           onError: (error) => {
@@ -51,11 +52,12 @@ export default function SignUpTab() {
               description: error.error.message || "Failed to signup",
             });
           },
-          onSuccess: () => {
-            router.push("/");
-          },
         },
       );
+
+      if (res.error == null && res.data.user.emailVerified === false) {
+        openEmailVerificationTab(data.email);
+      }
     });
   }
 
