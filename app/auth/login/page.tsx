@@ -37,10 +37,13 @@ export default function LoginPage() {
       onValueChange={(t) => setSelectedTab(t as Tab)}
       className="mx-auto w-full max-w-md my-10 px-4"
     >
-      <TabsList>
-        <TabsTrigger value="signin">Log in</TabsTrigger>
-        <TabsTrigger value="signup">Sign up</TabsTrigger>
-      </TabsList>
+      {selectedTab === "signin" ||
+        (selectedTab === "signup" && (
+          <TabsList>
+            <TabsTrigger value="signin">Log in</TabsTrigger>
+            <TabsTrigger value="signup">Sign up</TabsTrigger>
+          </TabsList>
+        ))}
       <TabsContent value="signin">
         <Card>
           <CardHeader>
