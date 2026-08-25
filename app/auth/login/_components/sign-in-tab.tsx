@@ -25,7 +25,11 @@ const signInSchema = z.object({
 
 type SignInForm = z.infer<typeof signInSchema>;
 
-export default function SignInTab() {
+export default function SignInTab({
+  openEmailVerificationTab,
+}: {
+  openEmailVerificationTab: (email: string) => void;
+}) {
   const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
@@ -38,12 +42,16 @@ export default function SignInTab() {
     },
   });
 
-  function handleSignUp(data: SignInForm) {
+  function handleSignIn(data: SignInForm) {
     startTransition(async () => {
       await authClient.signIn.email(
         { ...data, callbackURL: "/" },
         {
           onError: (error) => {
+            if (error.error.code === "EMAIL_NOT_VERIFIED") {
+              openEmailVerificationTab(data.email);
+            }
+
             toast.add({
               type: "error",
               description: error.error.message || "Failed to login",
@@ -58,7 +66,7 @@ export default function SignInTab() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(handleSignUp)}>
+    <form onSubmit={form.handleSubmit(handleSignIn)}>
       <FieldGroup className="gap-y-4">
         <Controller
           name="email"

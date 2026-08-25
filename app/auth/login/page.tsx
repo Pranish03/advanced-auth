@@ -58,7 +58,7 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <SignInTab />
+            <SignInTab openEmailVerificationTab={openEmailVerificationTab} />
           </CardContent>
           <CardFooter className="grid grid-cols-2 gap-3">
             <SocialAuthButtons />
