@@ -24,7 +24,7 @@ export default function SocialAuthButtons() {
         onError: (error) => {
           toast.add({
             type: "error",
-            description: error.error.message || "Failed to sign in",
+            title: error.error.message || "Failed to sign in",
           });
 
           setLoadingProvider(null);

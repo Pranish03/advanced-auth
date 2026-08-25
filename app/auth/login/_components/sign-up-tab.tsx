@@ -49,7 +49,7 @@ export default function SignUpTab({
           onError: (error) => {
             toast.add({
               type: "error",
-              description: error.error.message || "Failed to signup",
+              title: error.error.message || "Failed to signup",
             });
           },
         },

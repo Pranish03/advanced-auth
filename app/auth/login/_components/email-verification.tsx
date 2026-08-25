@@ -46,12 +46,12 @@ export default function EmailVerification({ email }: { email: string }) {
       if (error) {
         toast.add({
           type: "error",
-          description: error.message || "Failed to resend email",
+          title: error.message || "Failed to resend email",
         });
       } else {
         toast.add({
           type: "success",
-          description: "Verification email sent!",
+          title: "Verification email sent!",
         });
         setTimeToNextResend(30);
         runCountdown();

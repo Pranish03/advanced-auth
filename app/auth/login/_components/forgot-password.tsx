@@ -44,14 +44,14 @@ export default function ForgotPassword({
           onError: (error) => {
             toast.add({
               type: "error",
-              description:
+              title:
                 error.error.message || "Failed to send password reset email",
             });
           },
           onSuccess: () => {
             toast.add({
               type: "success",
-              description: "Password reset email sent",
+              title: "Password reset email sent",
             });
           },
         },

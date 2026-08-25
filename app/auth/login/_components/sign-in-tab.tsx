@@ -56,7 +56,7 @@ export default function SignInTab({
 
             toast.add({
               type: "error",
-              description: error.error.message || "Failed to login",
+              title: error.error.message || "Failed to login",
             });
           },
           onSuccess: () => {
