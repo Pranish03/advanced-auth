@@ -16,8 +16,9 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import EmailVerification from "./_components/email-verification";
+import ForgotPassword from "./_components/forgot-password";
 
-type Tab = "signin" | "signup" | "email-verification";
+type Tab = "signin" | "signup" | "email-verification" | "forgot-password";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,13 +43,13 @@ export default function LoginPage() {
       onValueChange={(t) => setSelectedTab(t as Tab)}
       className="mx-auto w-full max-w-md my-10 px-4"
     >
-      {selectedTab === "signin" ||
-        (selectedTab === "signup" && (
-          <TabsList>
-            <TabsTrigger value="signin">Log in</TabsTrigger>
-            <TabsTrigger value="signup">Sign up</TabsTrigger>
-          </TabsList>
-        ))}
+      {(selectedTab === "signin" || selectedTab === "signup") && (
+        <TabsList>
+          <TabsTrigger value="signin">Log in</TabsTrigger>
+          <TabsTrigger value="signup">Sign up</TabsTrigger>
+        </TabsList>
+      )}
+
       <TabsContent value="signin">
         <Card>
           <CardHeader>
@@ -58,7 +59,10 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <SignInTab openEmailVerificationTab={openEmailVerificationTab} />
+            <SignInTab
+              openEmailVerificationTab={openEmailVerificationTab}
+              openForgotPassword={() => setSelectedTab("forgot-password")}
+            />
           </CardContent>
           <CardFooter className="grid grid-cols-2 gap-3">
             <SocialAuthButtons />
@@ -90,6 +94,17 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <EmailVerification email={email} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="forgot-password">
+        <Card>
+          <CardHeader>
+            <CardTitle>Forgot password</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ForgotPassword openSignInTab={() => setSelectedTab("signin")} />
           </CardContent>
         </Card>
       </TabsContent>

@@ -27,8 +27,10 @@ type SignInForm = z.infer<typeof signInSchema>;
 
 export default function SignInTab({
   openEmailVerificationTab,
+  openForgotPassword,
 }: {
   openEmailVerificationTab: (email: string) => void;
+  openForgotPassword: () => void;
 }) {
   const [isPending, startTransition] = useTransition();
 
@@ -91,7 +93,19 @@ export default function SignInTab({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <div className="flex justify-between items-center">
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+
+                <Button
+                  onClick={openForgotPassword}
+                  variant="link"
+                  size="sm"
+                  className="text-sm fornt-normal underline"
+                >
+                  Forgot password?
+                </Button>
+              </div>
+
               <PasswordInput
                 id="password"
                 placeholder="••••••••"
