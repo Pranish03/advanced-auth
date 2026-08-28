@@ -5,6 +5,7 @@ import { nextCookies } from "better-auth/next-js";
 import { sendPasswordResetEmail } from "./emails/password-reset-email";
 import { sendVerificationEmail } from "./emails/verification-email";
 import { createAuthMiddleware } from "better-auth/api";
+import { sendWelcomeEmail } from "./emails/welcome-email";
 
 export const auth = betterAuth({
   emailAndPassword: {
@@ -47,10 +48,13 @@ export const auth = betterAuth({
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.path.startsWith("/sign-up")) {
-        const session = ctx.context.newSession ?? ctx.context.session;
+        const user = ctx.context.newSession?.user ?? {
+          name: ctx.body.name,
+          email: ctx.body.email,
+        };
 
-        if (session != null) {
-          await sendWelcomeEmail(session.user);
+        if (user != null) {
+          await sendWelcomeEmail(user);
         }
       }
     }),
